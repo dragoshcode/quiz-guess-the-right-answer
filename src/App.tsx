@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import logo from './assets/logo.png';
 import QuestionCard from './components/QuestionCard';
 import { fetchQuizQuestions, Question } from './API';
 import { Difficulty, QuestionState } from './API';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface AnswerObject {
   question: string;
@@ -12,14 +13,28 @@ interface AnswerObject {
 }
 
 const TOTAL_QUESTIONS = 10;
+const PERCENTAGE = 66;
 
 const App = () => {
+  const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [questions, setQuestions] = useState<QuestionState[]>([]);
   const [number, setNumber] = useState(0);
   const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 100 ? 0 : prevProgress + 30
+      );
+    }, 800);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   const startTrivia = async () => {
     setLoading(true);
@@ -50,15 +65,17 @@ const App = () => {
         </button>
       ) : null}
       {!gameOver ? <p className='score'>Score:</p> : null}
-      {loading && <p className=''>Loading Questions . . .</p>}
-      {/* <QuestionCard
-        questionNr={number + 1}
-        totalQuestions={TOTAL_QUESTIONS}
-        question={questions[number].question}
-        answers={questions[number].answers}
-        userAnswer={userAnswers ? userAnswers[number] : undefined}
-        callback={checkAnswer}
-      /> */}
+      {loading && <CircularProgress variant='determinate' value={progress} />}
+      {!loading && !gameOver && (
+        <QuestionCard
+          questionNr={number + 1}
+          totalQuestions={TOTAL_QUESTIONS}
+          question={questions[number].question}
+          answers={questions[number].answers}
+          userAnswer={userAnswers ? userAnswers[number] : undefined}
+          callback={checkAnswer}
+        />
+      )}
       <button className='next' onClick={nextQuestion}>
         Next Question
       </button>
