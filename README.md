@@ -1,4 +1,4 @@
-<h1 id="top" align="center">Quiz 🤔</h1>
+<h1 id="top" align="center">Quiz</h1>
 
 ## 🎯Links
 
