@@ -5,7 +5,7 @@ import { fetchQuizQuestions, Question } from './API';
 import { Difficulty, QuestionState } from './API';
 import CircularProgress from '@mui/material/CircularProgress';
 
-interface AnswerObject {
+export interface AnswerObject {
   question: string;
   answer: string;
   correct: boolean;
@@ -52,7 +52,7 @@ const App = () => {
     setLoading(false);
   };
 
-  const checkAnswer = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!gameOver) {
       const answer = e.currentTarget.value;
       const correct = questions[number].correct_answer === answer;
