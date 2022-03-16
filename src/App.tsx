@@ -44,11 +44,13 @@ const App = () => {
   return (
     <div className='App'>
       <img src={logo} alt='logo' />
-      <button className='start' onClick={startTrivia}>
-        Start
-      </button>
-      <p className='score'>Score:</p>
-      <p className=''>Loading Questions . . .</p>
+      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+        <button className='start' onClick={startTrivia}>
+          Start
+        </button>
+      ) : null}
+      {!gameOver ? <p className='score'>Score:</p> : null}
+      {loading && <p className=''>Loading Questions . . .</p>}
       {/* <QuestionCard
         questionNr={number + 1}
         totalQuestions={TOTAL_QUESTIONS}
